@@ -1,6 +1,6 @@
 window.addEventListener('DOMContentLoaded', function() {
 
-    // Tabs----------------------------------------------------------------------------------------------
+    // Tabs
     
 	let tabs = document.querySelectorAll('.tabheader__item'),
 		tabsContent = document.querySelectorAll('.tabcontent'),
@@ -39,9 +39,9 @@ window.addEventListener('DOMContentLoaded', function() {
 		}
     });
     
-    // Timer----------------------------------------------------------------------------------------------
+    // Timer
 
-    const deadline = '2025-05-10';
+    const deadline = '2025-06-11';
 
     function getTimeRemaining(endtime) {
         const t = Date.parse(endtime) - Date.parse(new Date()),
@@ -94,11 +94,10 @@ window.addEventListener('DOMContentLoaded', function() {
 
     setClock('.timer', deadline);
 
-    // Modal----------------------------------------------------------------------------------------------
+    // Modal
 
     const modalTrigger = document.querySelectorAll('[data-modal]'),
-        modal = document.querySelector('.modal'),
-        modalCloseBtn = document.querySelector('[data-close]');
+        modal = document.querySelector('.modal');
 
     modalTrigger.forEach(btn => {
         btn.addEventListener('click', openModal);
@@ -116,11 +115,9 @@ window.addEventListener('DOMContentLoaded', function() {
         document.body.style.overflow = 'hidden';
         clearInterval(modalTimerId);
     }
-    
-    modalCloseBtn.addEventListener('click', closeModal);
 
     modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
+        if (e.target === modal || e.target.getAttribute('data-close') == "") {
             closeModal();
         }
     });
@@ -131,8 +128,8 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // const modalTimerId = setTimeout(openModal, 3000);
-    
+    const modalTimerId = setTimeout(openModal, 300000);
+    // Изменил значение, чтобы не отвлекало
 
     function showModalByScroll() {
         if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
@@ -142,7 +139,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }
     window.addEventListener('scroll', showModalByScroll);
 
-    // Використовуємо класи для створення карточок меню
+    // Используем классы для создание карточек меню
 
     class MenuCard {
         constructor(src, alt, title, descr, price, parentSelector, ...classes) {
@@ -177,7 +174,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 <div class="menu__item-descr">${this.descr}</div>
                 <div class="menu__item-divider"></div>
                 <div class="menu__item-price">
-                    <div class="menu__item-cost">Ціна:</div>
+                    <div class="menu__item-cost">Цена:</div>
                     <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
                 </div>
             `;
@@ -185,117 +182,120 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    new MenuCard(
-        "img/tabs/vegy.jpg",
-        "vegy",
-        'Меню "Фітнес"',
-        'Меню "Фітнес" - це новий підхід до приготування страв: більше свіжих овочів та фруктів. Продукт активних та здорових людей. Це абсолютно новий продукт з оптимальною ціною та високою якістю!',
-        9,
-        ".menu .container"
-    ).render();
+    getResource('http://localhost:3000/menu')
+        .then(data => {
+            data.forEach(({img, altimg, title, descr, price}) => {
+                new MenuCard(img, altimg, title, descr, price, ".menu .container").render();
+            });
+        });
 
-    new MenuCard(
-        "img/tabs/post.jpg",
-        "post",
-        'Меню "Пісне"',
-        'Меню Пісне - це ретельний підбір інгредієнтів: повна відсутність продуктів тваринного походження, молоко з мигдалю, вівса, кокосу або гречки, правильна кількість білків за рахунок тофу та вег-стейків.',
-        14,
-        ".menu .container"
-    ).render();
+    // getResource('http://localhost:3000/menu')
+    //     .then(data => createCard(data));
 
-    new MenuCard(
-        "img/tabs/elite.jpg",
-        "elite",
-        'Меню “Преміум”',
-        'В меню “Преміум” ми використовуємо не лише гарний дизайн упаковки, але й якісне виконання страв. Червона риба, морепродукти, фрукти – ресторанне меню без походу до ресторану!',
-        21,
-        ".menu .container"
-    ).render();
+    // function createCard(data) {
+    //     data.forEach(({img, altimg, title, descr, price}) => {
+    //         const element = document.createElement('div');
 
+    //         element.classList.add("menu__item");
 
-    //Forms----------------------------------------------------------------------------------------------
+    //         element.innerHTML = `
+    //             <img src=${img} alt=${altimg}>
+    //             <h3 class="menu__item-subtitle">${title}</h3>
+    //             <div class="menu__item-descr">${descr}</div>
+    //             <div class="menu__item-divider"></div>
+    //             <div class="menu__item-price">
+    //                 <div class="menu__item-cost">Цена:</div>
+    //                 <div class="menu__item-total"><span>${price}</span> грн/день</div>
+    //             </div>
+    //         `;
+    //         document.querySelector(".menu .container").append(element);
+    //     });
+    // }
+
+    // Forms
 
     const forms = document.querySelectorAll('form');
-
     const message = {
-        loading: 'Loanding...',
-        success: 'Thanks! We will contact you soon! ',
-        failure: 'Something went wrong...'
+        loading: 'img/form/spinner.svg',
+        success: 'Дякуємо! Найближчим часом з вами звяжуться!',
+        failure: 'Огоо, щось пішло не так...'
     };
 
     forms.forEach(item => {
-        postData(item);
-    })
+        bindPostData(item);
+    });
 
-    function postData(form){
+    const postData = async (url, data) => {
+        let res = await fetch(url, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: data
+        });
+    
+        return await res.json();
+    };
+
+    async function getResource(url) {
+        let res = await fetch(url);
+    
+        if (!res.ok) {
+            throw new Error(`Could not fetch ${url}, status: ${res.status}`);
+        }
+    
+        return await res.json();
+    }
+
+    function bindPostData(form) {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            const statusMessage = document.createElement('div');
-            statusMessage.classList.add('status');
-            statusMessage.textContent = message.loading;
-            form.append(statusMessage);
-
-            
-
-            request.setRequestHeader('Content-Type', 'application/json');
+            let statusMessage = document.createElement('img');
+            statusMessage.src = message.loading;
+            statusMessage.style.cssText = `
+                display: block;
+                margin: 0 auto;
+            `;
+            form.insertAdjacentElement('afterend', statusMessage);
+        
             const formData = new FormData(form);
 
-            // const object = {};
-            // formData.forEach(function(value, key) {
-            //     object[key] = value;
-            // });
+            const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
-            // const json = JSON.stringify(object);
-
-            fetch('server.php', {
-                method: "POST",
-                headers: {
-                    'Content-type': 'application/json'
-                },
-                body: formData
-            }).then(data => data.text())
+            postData('http://localhost:3000/requests', json)
             .then(data => {
                 console.log(data);
                 showThanksModal(message.success);
-                form.reset();
                 statusMessage.remove();
             }).catch(() => {
                 showThanksModal(message.failure);
             }).finally(() => {
                 form.reset();
-            })
-
-            // request.addEventListener('load', () => {
-            //     if (request.status === 200) {
-            //         console.log(request.response);
-            //         statusMessage.textContent = message.success;
-
-            //         form.reset();
-            //         setTimeout(() => {
-            //            statusMessage.remove(); 
-            //         }, 2000);
-
-            //     }else {
-            //         statusMessage.textContent = message.failure;
-            //     }
-            // });
+            });
         });
     }
 
-    // API fetch(), jsonplaceholder----------------------------------------
+    function showThanksModal(message) {
+        const prevModalDialog = document.querySelector('.modal__dialog');
 
-    // fetch('https://jsonplaceholder.typicode.com/posts', {
-    //     method: "POST",
-    //     body: JSON.stringify({name: 'Alex'}),
-    //     headers: {
-    //         'Content-type': 'application/json'
-    //     }
-    // })
-    // .then(response => response.json())
-    // .then(json => console.log(json));
+        prevModalDialog.classList.add('hide');
+        openModal();
 
-    fetch('http://localhost:3000/menu')
-        .then(data => data.json())
-        .then(res => console.log(res));
+        const thanksModal = document.createElement('div');
+        thanksModal.classList.add('modal__dialog');
+        thanksModal.innerHTML = `
+            <div class="modal__content">
+                <div class="modal__close" data-close>×</div>
+                <div class="modal__title">${message}</div>
+            </div>
+        `;
+        document.querySelector('.modal').append(thanksModal);
+        setTimeout(() => {
+            thanksModal.remove();
+            prevModalDialog.classList.add('show');
+            prevModalDialog.classList.remove('hide');
+            closeModal();
+        }, 4000);
+    }
 });
