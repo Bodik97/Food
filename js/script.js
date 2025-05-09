@@ -41,7 +41,7 @@ window.addEventListener('DOMContentLoaded', function() {
     
     // Timer----------------------------------------------------------------------------------------------
 
-    const deadline = '2025-04-10';
+    const deadline = '2025-05-10';
 
     function getTimeRemaining(endtime) {
         const t = Date.parse(endtime) - Date.parse(new Date()),
@@ -132,7 +132,7 @@ window.addEventListener('DOMContentLoaded', function() {
     });
 
     // const modalTimerId = setTimeout(openModal, 3000);
-    // Закомментировал, чтобы не отвлекало
+    
 
     function showModalByScroll() {
         if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
@@ -142,7 +142,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }
     window.addEventListener('scroll', showModalByScroll);
 
-    // Используем классы для создание карточек меню
+    // Використовуємо класи для створення карточок меню
 
     class MenuCard {
         constructor(src, alt, title, descr, price, parentSelector, ...classes) {
@@ -177,7 +177,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 <div class="menu__item-descr">${this.descr}</div>
                 <div class="menu__item-divider"></div>
                 <div class="menu__item-price">
-                    <div class="menu__item-cost">Цена:</div>
+                    <div class="menu__item-cost">Ціна:</div>
                     <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
                 </div>
             `;
@@ -188,8 +188,8 @@ window.addEventListener('DOMContentLoaded', function() {
     new MenuCard(
         "img/tabs/vegy.jpg",
         "vegy",
-        'Меню "Фитнес"',
-        'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+        'Меню "Фітнес"',
+        'Меню "Фітнес" - це новий підхід до приготування страв: більше свіжих овочів та фруктів. Продукт активних та здорових людей. Це абсолютно новий продукт з оптимальною ціною та високою якістю!',
         9,
         ".menu .container"
     ).render();
@@ -197,8 +197,8 @@ window.addEventListener('DOMContentLoaded', function() {
     new MenuCard(
         "img/tabs/post.jpg",
         "post",
-        'Меню "Постное"',
-        'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+        'Меню "Пісне"',
+        'Меню Пісне - це ретельний підбір інгредієнтів: повна відсутність продуктів тваринного походження, молоко з мигдалю, вівса, кокосу або гречки, правильна кількість білків за рахунок тофу та вег-стейків.',
         14,
         ".menu .container"
     ).render();
@@ -206,8 +206,8 @@ window.addEventListener('DOMContentLoaded', function() {
     new MenuCard(
         "img/tabs/elite.jpg",
         "elite",
-        'Меню “Премиум”',
-        'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+        'Меню “Преміум”',
+        'В меню “Преміум” ми використовуємо не лише гарний дизайн упаковки, але й якісне виконання страв. Червона риба, морепродукти, фрукти – ресторанне меню без походу до ресторану!',
         21,
         ".menu .container"
     ).render();
