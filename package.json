@@ -1,0 +1,23 @@
+{
+  "name": "food_fetch-api",
+  "version": "1.0.0",
+  "description": "This sait about food",
+  "homepage": "https://github.com/Bodik97/Food#readme",
+  "bugs": {
+    "url": "https://github.com/Bodik97/Food/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bodik97/Food.git"
+  },
+  "license": "ISC",
+  "author": "Bohdan Voitsihovsckij",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "json-server": "^1.0.0-beta.3"
+  }
+}
