@@ -1,6 +1,6 @@
 window.addEventListener('DOMContentLoaded', function() {
 
-    // Tabs
+    // Tabs-----------------------------------------------------------------------------------------------------
     
 	let tabs = document.querySelectorAll('.tabheader__item'),
 		tabsContent = document.querySelectorAll('.tabcontent'),
@@ -39,9 +39,9 @@ window.addEventListener('DOMContentLoaded', function() {
 		}
     });
     
-    // Timer
+    // Timer----------------------------------------------------------------------------------------------------
 
-    const deadline = '2025-06-11';
+    const deadline = '2022-06-11';
 
     function getTimeRemaining(endtime) {
         const t = Date.parse(endtime) - Date.parse(new Date()),
@@ -94,7 +94,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
     setClock('.timer', deadline);
 
-    // Modal
+    // Modal----------------------------------------------------------------------------------------------------
 
     const modalTrigger = document.querySelectorAll('[data-modal]'),
         modal = document.querySelector('.modal');
@@ -129,7 +129,6 @@ window.addEventListener('DOMContentLoaded', function() {
     });
 
     const modalTimerId = setTimeout(openModal, 300000);
-    // Изменил значение, чтобы не отвлекало
 
     function showModalByScroll() {
         if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
@@ -139,7 +138,7 @@ window.addEventListener('DOMContentLoaded', function() {
     }
     window.addEventListener('scroll', showModalByScroll);
 
-    // Используем классы для создание карточек меню
+    // Використовуємо класи для створення карток меню
 
     class MenuCard {
         constructor(src, alt, title, descr, price, parentSelector, ...classes) {
@@ -189,36 +188,13 @@ window.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-    // getResource('http://localhost:3000/menu')
-    //     .then(data => createCard(data));
-
-    // function createCard(data) {
-    //     data.forEach(({img, altimg, title, descr, price}) => {
-    //         const element = document.createElement('div');
-
-    //         element.classList.add("menu__item");
-
-    //         element.innerHTML = `
-    //             <img src=${img} alt=${altimg}>
-    //             <h3 class="menu__item-subtitle">${title}</h3>
-    //             <div class="menu__item-descr">${descr}</div>
-    //             <div class="menu__item-divider"></div>
-    //             <div class="menu__item-price">
-    //                 <div class="menu__item-cost">Цена:</div>
-    //                 <div class="menu__item-total"><span>${price}</span> грн/день</div>
-    //             </div>
-    //         `;
-    //         document.querySelector(".menu .container").append(element);
-    //     });
-    // }
-
-    // Forms
+    // Forms-------------------------------------------------------------------------------------------------------
 
     const forms = document.querySelectorAll('form');
     const message = {
         loading: 'img/form/spinner.svg',
-        success: 'Дякуємо! Найближчим часом з вами звяжуться!',
-        failure: 'Огоо, щось пішло не так...'
+        success: 'ДЯкуємо! Скоро звяжемося з вами',
+        failure: 'Опаа, щось пішло не так...'
     };
 
     forms.forEach(item => {
@@ -298,4 +274,52 @@ window.addEventListener('DOMContentLoaded', function() {
             closeModal();
         }, 4000);
     }
+
+    // Slider---------------------------------------------------------------------------------------------------
+
+    let slideIndex = 1;
+    const slides = document.querySelectorAll('.offer__slide'),
+        prev = document.querySelector('.offer__slider-prev'),
+        next = document.querySelector('.offer__slider-next'),
+        total = document.querySelector('#total'),
+        current = document.querySelector('#current');
+
+    showSlides(slideIndex);
+
+    if (slides.length < 10) {
+        total.textContent = `0${slides.length}`;
+    } else {
+        total.textContent = slides.length;
+    }
+
+    function showSlides(n) {
+        if (n > slides.length) {
+            slideIndex = 1;
+        }
+        if (n < 1) {
+            slideIndex = slides.length;
+        }
+
+        slides.forEach((item) => item.style.display = 'none');
+
+        slides[slideIndex - 1].style.display = 'block'; 
+        
+        if (slides.length < 10) {
+            current.textContent =  `0${slideIndex}`;
+        } else {
+            current.textContent =  slideIndex;
+        }
+    }
+
+    function plusSlides (n) {
+        showSlides(slideIndex += n);
+    }
+
+    prev.addEventListener('click', function(){
+        plusSlides(-1);
+    });
+
+    next.addEventListener('click', function(){
+        plusSlides(1);
+    });
 });
