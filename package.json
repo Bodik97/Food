@@ -12,16 +12,24 @@
   },
   "license": "ISC",
   "author": "Bohdan Voitsihovsckij",
-  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "browserslist": [
+    "> 1%",
+    "not dead"
+  ],
   "devDependencies": {
     "@babel/core": "^7.27.1",
     "@babel/preset-env": "^7.27.2",
     "babel-loader": "^10.0.0",
     "json-server": "^1.0.0-beta.3",
     "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "es6-promise": "^4.2.8",
+    "nodelist-foreach-polyfill": "^1.2.0"
   }
 }
